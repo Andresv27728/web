@@ -1,0 +1,52 @@
+# render.yaml
+services:
+  - type: web
+    name: boxmine-whatsapp-bot
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/stats
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: true
+      - key: PUPPETEER_EXECUTABLE_PATH
+        value: /usr/bin/google-chrome-stable
+    disk:
+      name: whatsapp-data
+      mountPath: /app/data
+      sizeGB: 1
+    regions:
+      - oregon
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+    dockerFile: |
+      FROM node:18-slim
+      
+      # Instalar Chrome
+      RUN apt-get update && apt-get install -y \
+          wget \
+          gnupg \
+          ca-certificates \
+          procps \
+          libxss1 \
+          && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+          && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+          && apt-get update \
+          && apt-get install -y google-chrome-stable \
+          && rm -rf /var/lib/apt/lists/*
+      
+      WORKDIR /app
+      COPY package*.json ./
+      RUN npm ci --only=production
+      COPY . .
+      
+      RUN mkdir -p uploads plugins data
+      
+      EXPOSE 10000
+      CMD ["npm", "start"]
