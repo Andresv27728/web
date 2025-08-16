@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoxMine WhatsApp Bot</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00c851, #007e33);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00c851;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .qr-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .qr-code {
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 1rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .qr-code img {
+            max-width: 250px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-online {
+            background: #00c851;
+        }
+
+        .status-offline {
+            background: #ff4444;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .input-group {
+            margin: 1rem 0;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .subbots-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 1rem 0;
+        }
+
+        .subbot-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+
+        .close:hover {
+            opacity: 0.7;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .admin-panel {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .file-manager {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            margin: 0.3rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 5px;
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff4444, #cc0000);
+            color: white;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: #00c851;
+            background: rgba(0, 200, 81, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+                BoxMine Bot
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="showAdminLogin()">
+                    <i class="fas fa-cog"></i> Admin
+                </button>
+                <a href="#qr-section" class="btn btn-primary">
+                    <i class="fas fa-qrcode"></i> Conectar
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>🤖 BoxMine WhatsApp Bot</h1>
+            <p>Bot avanzado de WhatsApp con múltiples funciones y sistema de subbots</p>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Estadísticas -->
+            <div class="card">
+                <h3>
+                    <i class="fas fa-chart-bar"></i>
+                    Estadísticas del Bot
+                </h3>
+                <div class="stats-grid" id="statsContainer">
+                    <div class="stat-item">
+                        <div class="stat-number" id="messagesCount">0</div>
+                        <div class="stat-label">Mensajes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="usersCount">0</div>
+                        <div class="stat-label">Usuarios</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="uptimeCount">0</div>
+                        <div class="stat-label">Uptime (hrs)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="subbotsCount">0</div>
+                        <div class="stat-label">Subbots</div>
+                    </div>
+                </div>
+                <div class="connection-status">
+                    <div class="status-dot status-offline" id="statusDot"></div>
+                    <span id="connectionStatus">Desconectado</span>
+                </div>
+            </div>
+
+            <!-- QR Code -->
+            <div class="card" id="qr-section">
+                <h3>
+                    <i class="fas fa-qrcode"></i>
+                    Vinculación del Bot
+                </h3>
+                <div class="qr-container">
+                    <div class="qr-code" id="qrContainer">
+                        <div class="loading" style="display: block;">
+                            <div class="spinner"></div>
+                            <p>Generando código QR...</p>
+                        </div>
+                    </div>
+                    <p><strong>Instrucciones:</strong></p>
+                    <ol style="text-align: left; margin: 1rem 0;">
+                        <li>Abre WhatsApp en tu teléfono</li>
+                        <li>Ve a Configuración > Dispositivos vinculados</li>
+                        <li>Toca "Vincular un dispositivo"</li>
+                        <li>Escanea este código QR</li>
+                    </ol>
+                    <button class="btn btn-secondary" onclick="refreshQR()">
+                        <i class="fas fa-refresh"></i> Actualizar QR
+                    </button>
+                </div>
+            </div>
+
+            <!-- Subbots -->
+            <div class="card">
+                <h3>
+                    <i class="fas fa-robot"></i>
+                    Gestión de Subbots
+                </h3>
+                <p>Crea subbots adicionales para diferentes propósitos</p>
+                
+                <div class="input-group">
+                    <input type="text" id="subbotCode" placeholder="Código de 8 dígitos (opcional)" maxlength="8">
+                </div>
+                
+                <button class="btn btn-primary" onclick="createSubbot()" style="width: 100%; margin: 1rem 0;">
+                    <i class="fas fa-plus"></i> Crear Subbot
+                </button>
+                
+                <div class="subbots-list" id="subbotsList">
+                    <p style="text-align: center; opacity: 0.7;">No hay subbots creados</p>
+                </div>
+            </div>
+
+            <!-- Comandos -->
+            <div class="card">
+                <h3>
+                    <i class="fas fa-terminal"></i>
+                    Comandos Disponibles
+                </h3>
+                <div style="text-align: left;">
+                    <p><code>.menu</code> - Menú principal</p>
+                    <p><code>.ping</code> - Verificar latencia</p>
+                    <p><code>.info</code> - Información del bot</p>
+                    <p><code>.sticker</code> - Crear stickers</p>
+                    <p><code>.weather [ciudad]</code> - Ver clima</p>
+                    <p><code>.translate [idioma] [texto]</code> - Traducir</p>
+                    <p><code>.qr [texto]</code> - Generar QR</p>
+                    <p><code>.download [url]</code> - Descargar</p>
+                    <p><code>.help</code> - Ayuda detallada</p>
+                    <p><code>.update</code> - Actualizar (Owner)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Admin -->
+        <div class="admin-panel" id="adminPanel">
+            <div class="card">
+                <h3>
+                    <i class="fas fa-shield-alt"></i>
+                    Panel de Administración
+                </h3>
+                
+                <div class="file-manager">
+                    <h4>📁 Administrador de Archivos</h4>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Arrastra archivos aquí o haz clic para seleccionar</p>
+                        <input type="file" id="fileInput" style="display: none;" multiple>
+                    </div>
+                    
+                    <div id="filesList">
+                        <div class="loading" id="filesLoading">
+                            <div class="spinner"></div>
+                            <p>Cargando archivos...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-danger" onclick="logout()" style="width: 100%; margin-top: 1rem;">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login Admin -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3 style="margin-bottom: 2rem;">🔐 Acceso de Administrador</h3>
+            <div class="input-group">
+                <input type="password" id="adminPassword" placeholder="Contraseña de administrador">
+            </div>
+            <button class="btn btn-primary" onclick="adminLogin()" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let adminToken = null;
+        let updateInterval = null;
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadQR();
+            loadSubbots();
+            
+            // Actualizar cada 5 segundos
+            updateInterval = setInterval(loadStats, 5000);
+            
+            // Setup file upload
+            setupFileUpload();
+        });
+
+        // Cargar estadísticas
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('messagesCount').textContent = data.stats.messages;
+                    document.getElementById('usersCount').textContent = data.stats.users;
+                    document.getElementById('uptimeCount').textContent = Math.floor(data.stats.uptime / 3600);
+                    document.getElementById('subbotsCount').textContent = data.stats.subbots;
+                    
+                    // Actualizar estado de conexión
+                    const statusDot = document.getElementById('statusDot');
+                    const statusText = document.getElementById('connectionStatus');
+                    
+                    if (data.stats.isConnected) {
+                        statusDot.className = 'status-dot status-online';
+                        statusText.textContent = 'Conectado';
+                    } else {
+                        statusDot.className = 'status-dot status-offline';
+                        statusText.textContent = 'Desconectado';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Cargar código QR
+        async function loadQR() {
+            try {
+                const response = await fetch('/api/qr');
+                const data = await response.json();
+                
+                const qrContainer = document.getElementById('qrContainer');
+                
+                if (data.success) {
+                    qrContainer.innerHTML = `<img src="${data.qr}" alt="Código QR">`;
+                } else {
+                    qrContainer.innerHTML = '<p>❌ QR no disponible</p><p>El bot podría ya estar conectado</p>';
+                }
+            } catch (error) {
+                console.error('Error loading QR:', error);
+                document.getElementById('qrContainer').innerHTML = '<p>❌ Error cargando QR</p>';
+            }
+        }
+
+        // Actualizar QR
+        function refreshQR() {
+            document.getElementById('qrContainer').innerHTML = `
+                <div class="loading" style="display: block;">
+                    <div class="spinner"></div>
+                    <p>Generando nuevo código QR...</p>
+                </div>
+            `;
+            setTimeout(loadQR, 1000);
+        }
+
+        // Crear subbot
+        async function createSubbot() {
+            const code = document.getElementById('subbotCode').value;
+            
+            try {
+                const response = await fetch('/api/create-subbot', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`✅ Subbot creado exitosamente!\nID: ${data.subbotId}`);
+                    document.getElementById('subbotCode').value = '';
+                    loadSubbots();
+                } else {
+                    alert('❌ Error creando subbot: ' + data.error);
+                }
+            } catch (error) {
+                alert('❌ Error de conexión');
+            }
+        }
+
+        // Cargar lista de subbots
+        async function loadSubbots() {
+            // Esta función se implementaría con una API específica
+            // Por ahora solo mostramos mensaje
+            const subbotsList = document.getElementById('subbotsList');
+            subbotsList.innerHTML = '<p style="text-align: center; opacity: 0.7;">Funcionalidad en desarrollo</p>';
+        }
+
+        // Admin functions
+        function showAdminLogin() {
+            document.getElementById('adminModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        async function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            
+            if (!password) {
+                alert('Por favor ingresa la contraseña');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    adminToken = data.token;
+                    closeModal();
+                    document.getElementById('adminPanel').style.display = 'block';
+                    loadFiles();
+                    alert('✅ Acceso concedido');
+                } else {
+                    alert('❌ Contraseña incorrecta');
+                }
+            } catch (error) {
+                alert('❌ Error de conexión');
+            }
+        }
+
+        function logout() {
+            adminToken = null;
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        // File management
+        function setupFileUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            
+            uploadArea.addEventListener('click', () => fileInput.click());
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                handleFiles(e.dataTransfer.files);
+            });
+            
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+        }
+
+        async function handleFiles(files) {
+            for (let file of files) {
+                await uploadFile(file);
+            }
+            loadFiles();
+        }
+
+        async function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch('/api/admin/files', {
+                    method: 'POST',
+                    headers: { 'auth': adminToken },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`✅ Archivo ${file.name} subido exitosamente`);
+                } else {
+                    alert(`❌ Error subiendo ${file.name}: ${data.error}`);
+                }
+            } catch (error) {
+                alert(`❌ Error subiendo ${file.name}`);
+            }
+        }
+
+        async function loadFiles() {
+            if (!adminToken) return;
+            
+            const filesLoading = document.getElementById('filesLoading');
+            filesLoading.style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/admin/files', {
+                    headers: { 'auth': adminToken }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayFiles(data.files);
+                } else {
+                    alert('❌ Error cargando archivos');
+                }
+            } catch (error) {
+                alert('❌ Error de conexión');
+            } finally {
+                filesLoading.style.display = 'none';
+            }
+        }
+
+        function displayFiles(files) {
+            const filesList = document.getElementById('filesList');
+            
+            if (files.length === 0) {
+                filesList.innerHTML = '<p style="text-align: center; opacity: 0.7;">No hay archivos</p>';
+                return;
+            }
+            
+            const filesHtml = files.map(file => `
+                <div class="file-item">
+                    <span>
+                        <i class="fas fa-${file.type === 'directory' ? 'folder' : 'file'}"></i>
+                        ${file.name}
+                    </span>
+                    <div class="file-actions">
+                        ${file.type === 'file' ? `<button class="btn btn-small btn-danger" onclick="deleteFile('${file.name}')">
+                            <i class="fas fa-trash"></i>
+                        </button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+            
+            filesList.innerHTML = filesHtml;
+        }
+
+        async function deleteFile(filename) {
+            if (!confirm(`¿Eliminar ${filename}?`)) return;
+            
+            try {
+                const response = await fetch(`/api/admin/files/${filename}`, {
+                    method: 'DELETE',
+                    headers: { 'auth': adminToken }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`✅ ${filename} eliminado exitosamente`);
+                    loadFiles();
+                } else {
+                    alert(`❌ Error eliminando ${filename}`);
+                }
+            } catch (error) {
+                alert('❌ Error de conexión');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('adminModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Handle Enter key in password field
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                adminLogin();
+            }
+        });
+    </script>
+</body>
+</html>
