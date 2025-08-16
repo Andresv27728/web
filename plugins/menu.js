@@ -6,7 +6,7 @@ module.exports = {
     
     async execute(client, message, args, settings) {
         const menuText = `
-🤖 *${settings.botName}* - Menu Principal
+🦈 *${settings.botName}* - Menu Principal
 
 ┌─「 📋 COMANDOS BÁSICOS 」
 ├ ${settings.prefix}menu - Ver este menú
@@ -28,10 +28,10 @@ module.exports = {
 ├ Mensajes procesados: En desarrollo
 └ Uptime: En desarrollo
 
-💻 *Interfaz Web:* https://
+💻 *Interfaz Web:* https://tu-dominio.boxmine.xyz
 🆔 *Versión:* ${settings.version}
 
-_Desarrollado para test_`;
+_Desarrollado para BoxMine_`;
 
         await message.reply(menuText);
     }
