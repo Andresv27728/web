@@ -1,0 +1,47 @@
+{
+  "botName": "BoxMine Bot",
+  "owner": "521234567890",
+  "prefix": ".",
+  "adminPassword": "gawrgura",
+  "maxSubbots": 50,
+  "autoResponse": true,
+  "welcomeMessage": "¡Hola! Soy BoxMine Bot 🤖\n\nUsa .menu para ver los comandos disponibles.",
+  "ownerCommands": [
+    "update",
+    "restart",
+    "eval",
+    "broadcast"
+  ],
+  "moderators": [
+    "521234567890"
+  ],
+  "blockedNumbers": [],
+  "groupSettings": {
+    "antilink": false,
+    "antispam": true,
+    "welcome": true
+  },
+  "apiKeys": {
+    "openweather": "tu_api_key_aqui",
+    "youtube": "tu_api_key_aqui"
+  },
+  "database": {
+    "enabled": false,
+    "url": "mongodb://localhost:27017/whatsapp-bot"
+  },
+  "limits": {
+    "daily": {
+      "messages": 100,
+      "commands": 50
+    }
+  },
+  "maintenance": false,
+  "version": "1.0.0",
+  "lastUpdate": "2025-01-01T00:00:00Z",
+  "features": {
+    "subbots": true,
+    "fileManager": true,
+    "statistics": true,
+    "webInterface": true
+  }
+}
